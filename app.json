@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "AI Co-Founder",
+    "slug": "ai-cofounder",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#FFFFFF"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.aicofounder.app"
+    },
+    "android": {
+      "package": "com.aicofounder.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#FF5773"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
