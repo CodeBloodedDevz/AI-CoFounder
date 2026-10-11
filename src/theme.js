@@ -1,7 +1,11 @@
 export const colors = {
-  primary: '#FF5773',
-  primaryDark: '#E84266',
-  primaryLight: '#FFE3E9',
+  // Brand gradient — sampled from the approved UI prototype (coral → purple).
+  gradientStart: '#FB5561',
+  gradientEnd: '#6E2BFA',
+
+  primary: '#6E2BFA',
+  primaryDark: '#5A1FDB',
+  primaryLight: '#EDE6FE',
 
   dark: '#1E1A2E',
   darkSoft: '#2A2440',
@@ -10,11 +14,11 @@ export const colors = {
   appBg: '#EDEAF4',
   inputBg: '#F3F1F8',
   border: '#E6E2EF',
-  text: '#17131F',
+  text: '#141221',
   textMuted: '#8A8694',
   textSoft: '#55505F',
 
-  success: '#2FAE60',
+  success: '#22A45D',
   successBg: '#E8F8EE',
   warning: '#E8A33D',
   warningBg: '#FDF3E3',
@@ -22,6 +26,12 @@ export const colors = {
   dangerBg: '#FDECEA',
 
   white: '#FFFFFF',
+};
+
+export const gradient = {
+  colors: [colors.gradientStart, colors.gradientEnd],
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 0.15 },
 };
 
 export const radius = {

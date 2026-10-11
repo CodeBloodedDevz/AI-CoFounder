@@ -13,6 +13,8 @@ import PricingAssistantScreen from '../screens/PricingAssistantScreen';
 import OperationsScreen from '../screens/OperationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SubscriptionScreen from '../screens/SubscriptionScreen';
+import RecordTransactionScreen from '../screens/RecordTransactionScreen';
+import VoiceNotesScreen from '../screens/VoiceNotesScreen';
 import MainTabs from './MainTabs';
 
 const Stack = createNativeStackNavigator();
@@ -29,15 +31,15 @@ export default function RootNavigator() {
   }
 
   const isLoggedIn = !!state.user;
-  const initialRouteName = !isLoggedIn ? 'Splash' : state.business ? 'Main' : 'BusinessSetup';
+  const initialRouteName = !isLoggedIn ? 'Login' : state.business ? 'Main' : 'BusinessSetup';
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
         {!isLoggedIn ? (
           <>
-            <Stack.Screen name="Splash" component={SplashScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Splash" component={SplashScreen} />
           </>
         ) : (
           <>
@@ -48,6 +50,8 @@ export default function RootNavigator() {
             <Stack.Screen name="Operations" component={OperationsScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="Subscription" component={SubscriptionScreen} />
+            <Stack.Screen name="RecordTransaction" component={RecordTransactionScreen} />
+            <Stack.Screen name="VoiceNotes" component={VoiceNotesScreen} />
           </>
         )}
       </Stack.Navigator>

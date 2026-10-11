@@ -6,6 +6,14 @@ import {
   restockRecommendation,
   recommendPrice,
   locationPriceFactor,
+  parseDurationMinutes,
+  estimateServiceOperatingCost,
+  recommendServicePrice,
+  serviceBookingCounts,
+  recommendBusyHours,
+  customerStats,
+  recommendCustomerRetention,
+  recommendBusinessGrowth,
 } from './aiEngine';
 
 const transactions = [
@@ -100,5 +108,140 @@ describe('locationPriceFactor', () => {
 
   it('defaults to a neutral factor for an unknown location', () => {
     expect(locationPriceFactor('Some Small Town').factor).toBe(1.0);
+  });
+});
+
+/* ---------- Service-based AI helpers ---------- */
+
+describe('parseDurationMinutes', () => {
+  it('parses "45 minutes"', () => {
+    expect(parseDurationMinutes('45 minutes')).toBe(45);
+  });
+  it('parses "1 hour"', () => {
+    expect(parseDurationMinutes('1 hour')).toBe(60);
+  });
+  it('parses "1.5 hours"', () => {
+    expect(parseDurationMinutes('1.5 hours')).toBe(90);
+  });
+  it('defaults sensibly for unparseable input', () => {
+    expect(parseDurationMinutes('')).toBe(60);
+  });
+});
+
+describe('estimateServiceOperatingCost', () => {
+  it('scales with duration', () => {
+    const short = estimateServiceOperatingCost('30 minutes');
+    const long = estimateServiceOperatingCost('90 minutes');
+    expect(long).toBeGreaterThan(short);
+  });
+});
+
+describe('recommendServicePrice', () => {
+  const haircut = { name: 'Haircut', price: 150, duration: '45 minutes', category: 'Grooming' };
+
+  it('recommends a higher price when a service is booked heavily', () => {
+    const heavyBookings = Array.from({ length: 10 }, (_, i) => ({
+      id: `w${i}`,
+      service: 'Haircut',
+      status: 'Completed',
+    }));
+    const rec = recommendServicePrice(haircut, heavyBookings, { location: '' });
+    expect(rec.recommendedPrice).toBeGreaterThan(rec.currentPrice);
+  });
+
+  it('includes an estimated operating cost based on duration', () => {
+    const rec = recommendServicePrice(haircut, [], { location: '' });
+    expect(rec.estimatedOperatingCost).toBeGreaterThan(0);
+  });
+
+  it('gives a location-aware reason for a Cape Town business', () => {
+    const rec = recommendServicePrice(haircut, [], { location: 'Cape Town' });
+    expect(rec.locationArea).toBe('Cape Town');
+  });
+});
+
+describe('serviceBookingCounts', () => {
+  it('counts and ranks bookings per service', () => {
+    const work = [
+      { service: 'Haircut' },
+      { service: 'Haircut' },
+      { service: 'Fade' },
+    ];
+    const counts = serviceBookingCounts(work);
+    expect(counts[0]).toEqual({ name: 'Haircut', count: 2 });
+  });
+
+  it('returns an empty array when there is no work', () => {
+    expect(serviceBookingCounts([])).toEqual([]);
+  });
+});
+
+describe('recommendBusyHours', () => {
+  it('identifies the busiest day and hour', () => {
+    const work = [
+      { date: '2026-09-19', time: '10:00' }, // Saturday
+      { date: '2026-09-19', time: '10:30' },
+      { date: '2026-09-14', time: '14:00' }, // Monday
+    ];
+    const result = recommendBusyHours(work);
+    expect(result.byDay[0].day).toBe('Saturday');
+    expect(result.byHour[0].hour).toBe(10);
+    expect(result.insight).toMatch(/Saturday/);
+  });
+
+  it('gives a gentle prompt when there is no data yet', () => {
+    const result = recommendBusyHours([]);
+    expect(result.insight).toMatch(/Schedule a few appointments/i);
+  });
+});
+
+describe('customerStats', () => {
+  const services = [{ name: 'Haircut', price: 150 }];
+  it('sums spend and visits from completed work only', () => {
+    const customer = { id: 'c1', name: 'Thando' };
+    const work = [
+      { customerId: 'c1', service: 'Haircut', status: 'Completed', date: '2026-08-01' },
+      { customerId: 'c1', service: 'Haircut', status: 'Pending', date: '2026-09-01' },
+    ];
+    const stats = customerStats(customer, work, services);
+    expect(stats.visits).toBe(1);
+    expect(stats.totalSpent).toBe(150);
+    expect(stats.lastVisitDate).toBe('2026-08-01');
+  });
+});
+
+describe('recommendCustomerRetention', () => {
+  const services = [{ name: 'Haircut', price: 150 }];
+  it('flags a customer who has not visited in a while', () => {
+    const customers = [{ id: 'c1', name: 'Thando' }];
+    const work = [{ customerId: 'c1', service: 'Haircut', status: 'Completed', date: '2026-01-01' }];
+    const result = recommendCustomerRetention(customers, work, services, { today: new Date('2026-03-01') });
+    expect(result.length).toBe(1);
+    expect(result[0].insight).toMatch(/Thando/);
+  });
+
+  it('does not flag a customer who visited recently', () => {
+    const customers = [{ id: 'c1', name: 'Thando' }];
+    const work = [{ customerId: 'c1', service: 'Haircut', status: 'Completed', date: '2026-02-25' }];
+    const result = recommendCustomerRetention(customers, work, services, { today: new Date('2026-03-01') });
+    expect(result.length).toBe(0);
+  });
+});
+
+describe('recommendBusinessGrowth', () => {
+  it('reports positive growth when recent sales beat the prior period', () => {
+    const today = new Date('2026-03-01');
+    const txns = [
+      { type: 'sale', amount: 100, date: '2026-01-15' }, // previous 30-60 day window
+      { type: 'sale', amount: 300, date: '2026-02-20' }, // last 30 days
+    ];
+    const result = recommendBusinessGrowth(txns, { today });
+    expect(result.growthPct).toBeGreaterThan(0);
+    expect(result.insight).toMatch(/up/i);
+  });
+
+  it('prompts for more data when nothing has been recorded', () => {
+    const result = recommendBusinessGrowth([], { today: new Date('2026-03-01') });
+    expect(result.insight).toMatch(/Record a few more sales/i);
   });
 });

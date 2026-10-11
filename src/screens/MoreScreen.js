@@ -1,41 +1,52 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { Alert, View, Text, Pressable, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Screen from '../components/Screen';
 import Select from '../components/Select';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../i18n/I18nContext';
 import { LANGUAGES } from '../i18n/translations';
-import { colors, radius } from '../theme';
+import { colors, radius, gradient } from '../theme';
 import Icon from '../components/Icon';
-
-const BASE_ITEMS = [
-  { icon: 'person-outline', label: 'Profile', to: 'Profile' },
-  { icon: 'bar-chart-outline', labelKey: 'businessAnalytics', to: 'BusinessAnalytics' },
-  { icon: 'cash-outline', labelKey: 'aiPricingAssistant', to: 'PricingAssistant' },
-  { icon: 'people-outline', label: 'Customers & work', to: 'Operations' },
-  { icon: 'storefront-outline', labelKey: 'businessProfile', to: 'BusinessSetup' },
-];
 
 export default function MoreScreen({ navigation }) {
   const { state, logout, saveBusiness } = useApp();
   const { t } = useTranslation();
   const model = state.business?.businessModel || 'Product-based';
   const plan = state.subscription?.plan || 'Free';
+  const businessName = state.business?.name || 'Your Business';
+  const initials = businessName
+    .split(' ')
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
   const items = [
-    ...BASE_ITEMS.slice(0, 2),
-    ...(model !== 'Service-based' ? [{ icon: 'cube-outline', labelKey: 'stockManagement', to: 'StockManagement' }] : []),
-    ...(model !== 'Product-based' ? [{ icon: 'construct-outline', label: 'Services', to: 'ServiceManagement' }] : []),
-    BASE_ITEMS[2],
-    { icon: 'diamond-outline', label: 'Subscription', to: 'Subscription', badge: plan },
+    { icon: 'storefront-outline', label: 'Business Information', to: 'BusinessSetup' },
+    { icon: 'diamond-outline', label: 'Subscription & Billing', to: 'Subscription', badge: plan },
+    { icon: 'person-outline', label: 'Profile', to: 'Profile' },
+    { icon: 'mic-outline', labelKey: 'voiceNotes', to: 'VoiceNotes' },
+    { icon: 'bar-chart-outline', labelKey: 'businessAnalytics', to: 'BusinessAnalytics' },
+    { icon: 'cash-outline', labelKey: 'aiPricingAssistant', to: 'PricingAssistant' },
+    { icon: 'people-outline', label: 'Customers & work', to: 'Operations' },
+    ...(model !== 'Hybrid' ? [{ icon: 'cube-outline', label: model === 'Service-based' ? 'Services' : t('stockManagement'), to: 'StockTab', isTab: true }] : []),
+    { icon: 'people-circle-outline', label: 'Team Members', onPress: () => Alert.alert('Team Members', 'Multi-user team accounts are coming soon.') },
   ];
 
   return (
     <Screen>
       <View style={{ marginBottom: 16 }}>
-        <Text style={styles.title}>{t('navMore')}</Text>
-        <Text style={styles.subtitle}>
-          {state.user?.name} · {state.business?.name}
-        </Text>
+        <Text style={styles.title}>Business Profile</Text>
+        <Text style={styles.subtitle}>Manage your business information</Text>
       </View>
+
+      <LinearGradient colors={gradient.colors} start={gradient.start} end={gradient.end} style={styles.heroCard}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>{initials || 'B'}</Text>
+        </View>
+        <Text style={styles.heroName}>{businessName}</Text>
+      </LinearGradient>
 
       <Select
         icon="globe-outline"
@@ -46,7 +57,11 @@ export default function MoreScreen({ navigation }) {
       />
 
       {items.map((item) => (
-        <Pressable key={item.to} style={styles.row} onPress={() => navigation.navigate(item.to)}>
+        <Pressable
+          key={item.label || item.labelKey}
+          style={styles.row}
+          onPress={() => (item.onPress ? item.onPress() : navigation.navigate(item.to))}
+        >
           <View style={styles.rowLeft}>
             <Icon name={item.icon} size={19} color={colors.primary} />
             <Text style={styles.rowTitle}>{item.label || t(item.labelKey)}</Text>
@@ -63,12 +78,7 @@ export default function MoreScreen({ navigation }) {
       ))}
 
       <View style={{ height: 20 }} />
-      <Pressable
-        style={styles.logoutBtn}
-        onPress={() => {
-          logout();
-        }}
-      >
+      <Pressable style={styles.logoutBtn} onPress={() => logout()}>
         <Text style={styles.logoutText}>{t('logOut')}</Text>
       </Pressable>
     </Screen>
@@ -78,6 +88,18 @@ export default function MoreScreen({ navigation }) {
 const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: '800', color: colors.text },
   subtitle: { marginTop: 4, color: colors.textMuted, fontSize: 13.5 },
+  heroCard: { borderRadius: radius.lg, paddingVertical: 26, alignItems: 'center', marginBottom: 18 },
+  avatar: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  avatarText: { fontSize: 20, fontWeight: '800', color: colors.primary },
+  heroName: { color: colors.white, fontSize: 17, fontWeight: '800' },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -92,12 +114,10 @@ const styles = StyleSheet.create({
   badge: { backgroundColor: colors.primaryLight, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 3 },
   badgeText: { fontSize: 11, fontWeight: '700', color: colors.primaryDark },
   logoutBtn: {
-    backgroundColor: colors.primary,
-    borderWidth: 1.5,
-    borderColor: colors.primary,
+    backgroundColor: colors.inputBg,
     borderRadius: 999,
     paddingVertical: 13,
     alignItems: 'center',
   },
-  logoutText: { fontWeight: '700', color: colors.white },
+  logoutText: { fontWeight: '700', color: colors.danger },
 });

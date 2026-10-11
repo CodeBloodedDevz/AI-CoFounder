@@ -51,6 +51,7 @@ const en = {
   navTransactions: 'Transactions',
   navAI: 'AI',
   navStock: 'Stock',
+  navServices: 'Services',
   navMore: 'More',
   recordTransaction: 'Record Transaction',
   saveTransaction: 'Save Transaction',
@@ -85,6 +86,9 @@ const en = {
   thisYear: 'This Year',
   businessProfile: 'Business Profile',
   priceLocationNote: 'Prices are adjusted for your business location',
+  voiceNotes: 'Voice Notes',
+  tapToSpeak: 'Tap to speak',
+  tapToStop: 'Tap to stop',
 };
 
 const zu = {
@@ -265,6 +269,9 @@ const af = {
   aiCoFounderChatSubtitle: 'Jou besigheidsvennoot',
   askAnything: 'Vra enigiets...',
   holdToSpeak: 'Hou om te praat',
+  voiceNotes: 'Stemnotas',
+  tapToSpeak: 'Tik om te praat',
+  tapToStop: 'Tik om te stop',
 };
 
 const st = {

@@ -1,4 +1,3 @@
-import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from '../i18n/I18nContext';
 import { colors } from '../theme';
@@ -6,10 +5,11 @@ import { colors } from '../theme';
 import DashboardScreen from '../screens/DashboardScreen';
 import ServiceDashboardScreen from '../screens/ServiceDashboardScreen';
 import HybridDashboardScreen from '../screens/HybridDashboardScreen';
-import RecordTransactionScreen from '../screens/RecordTransactionScreen';
+import TransactionsScreen from '../screens/TransactionsScreen';
 import AIChatScreen from '../screens/AIChatScreen';
 import StockManagementScreen from '../screens/StockManagementScreen';
 import ServiceManagementScreen from '../screens/ServiceManagementScreen';
+import StockAndServicesScreen from '../screens/StockAndServicesScreen';
 import MoreScreen from '../screens/MoreScreen';
 import { useApp } from '../context/AppContext';
 import Icon from '../components/Icon';
@@ -28,6 +28,9 @@ export default function MainTabs() {
   const isHybrid = model === 'Hybrid';
   const Dashboard = isService ? ServiceDashboardScreen : isHybrid ? HybridDashboardScreen : DashboardScreen;
 
+  const StockTab = isHybrid ? StockAndServicesScreen : isService ? ServiceManagementScreen : StockManagementScreen;
+  const stockTabTitle = isHybrid ? 'Stock + Services' : isService ? t('navServices') : t('navStock');
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -44,34 +47,24 @@ export default function MainTabs() {
         options={{ title: t('navHome'), tabBarIcon: ({ focused }) => <TabIcon icon="home-outline" focused={focused} /> }}
       />
       <Tab.Screen
-        name="RecordTransaction"
-        component={RecordTransactionScreen}
-        options={{ title: t('navTransactions'), tabBarIcon: ({ focused }) => <TabIcon icon="receipt-outline" focused={focused} /> }}
-        initialParams={{}}
+        name="Activity"
+        component={TransactionsScreen}
+        options={{ title: t('navTransactions'), tabBarIcon: ({ focused }) => <TabIcon icon="pulse-outline" focused={focused} /> }}
+      />
+      <Tab.Screen
+        name="StockTab"
+        component={StockTab}
+        options={{ title: stockTabTitle, tabBarIcon: ({ focused }) => <TabIcon icon="cube-outline" focused={focused} /> }}
       />
       <Tab.Screen
         name="AIChat"
         component={AIChatScreen}
-        options={{ title: t('navAI'), tabBarIcon: ({ focused }) => <TabIcon icon="sparkles-outline" focused={focused} /> }}
+        options={{ title: t('navAI'), tabBarIcon: ({ focused }) => <TabIcon icon="person-add-outline" focused={focused} /> }}
       />
-      {(model === 'Product-based' || isHybrid) && (
-        <Tab.Screen
-          name="StockManagement"
-          component={StockManagementScreen}
-          options={{ title: t('navStock'), tabBarIcon: ({ focused }) => <TabIcon icon="cube-outline" focused={focused} /> }}
-        />
-      )}
-      {(isService || isHybrid) && (
-        <Tab.Screen
-          name="ServiceManagement"
-          component={ServiceManagementScreen}
-          options={{ title: 'Services', tabBarIcon: ({ focused }) => <TabIcon icon="construct-outline" focused={focused} /> }}
-        />
-      )}
       <Tab.Screen
         name="More"
         component={MoreScreen}
-        options={{ title: t('navMore'), tabBarIcon: ({ focused }) => <TabIcon icon="ellipsis-horizontal-outline" focused={focused} /> }}
+        options={{ title: t('navMore'), tabBarIcon: ({ focused }) => <TabIcon icon="menu-outline" focused={focused} /> }}
       />
     </Tab.Navigator>
   );

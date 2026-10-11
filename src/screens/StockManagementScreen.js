@@ -172,7 +172,7 @@ export default function StockManagementScreen({ navigation }) {
                     style={styles.recordBtn}
                     onPress={() =>
                       navigation.navigate('RecordTransaction', {
-                        type: 'stock_purchase',
+                        type: 'expense',
                         product: item.name,
                         quantity: item.suggestedQty,
                       })

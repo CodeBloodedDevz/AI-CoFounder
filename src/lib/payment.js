@@ -1,3 +1,9 @@
+// Lightweight card-payment helpers used by the Subscription screen.
+// This app has no backend or real payment gateway, so these functions
+// validate and format input locally. Only a masked summary (brand,
+// last 4 digits, expiry) is ever persisted — never the full card
+// number or CVV.
+
 export const PLANS = [
   {
     id: 'free',

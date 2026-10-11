@@ -24,7 +24,14 @@
     },
     "plugins": [
       "expo-status-bar",
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "AI Co-Founder uses the microphone so you can record voice notes and talk to your AI business partner.",
+          "enableBackgroundPlayback": false
+        }
+      ]
     ]
   }
 }

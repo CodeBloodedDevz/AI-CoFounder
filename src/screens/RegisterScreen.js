@@ -7,17 +7,21 @@ import { useApp, MIN_PASSWORD_LENGTH } from '../context/AppContext';
 import { useTranslation } from '../i18n/I18nContext';
 import { colors } from '../theme';
 import Icon from '../components/Icon';
+import BackButton from '../components/BackButton';
 
 export default function RegisterScreen({ navigation }) {
   const { register } = useApp();
   const { t } = useTranslation();
   const [form, setForm] = useState({ fullName: '', phone: '', email: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const set = (key) => (val) => setForm((f) => ({ ...f, [key]: val }));
 
-  const handleSubmit = () => {
-    const result = register(form);
+  const handleSubmit = async () => {
+    setLoading(true);
+    const result = await register(form);
+    setLoading(false);
     if (!result.ok) {
       setError(result.error);
       return;
@@ -28,6 +32,7 @@ export default function RegisterScreen({ navigation }) {
   return (
     <Screen>
       <View style={{ marginTop: 24, marginBottom: 20 }}>
+        <BackButton navigation={navigation} />
         <Text style={styles.title}>{t('createAccountTitle')}</Text>
         <Text style={styles.subtitle}>{t('createAccountSubtitle')}</Text>
       </View>
@@ -65,7 +70,7 @@ export default function RegisterScreen({ navigation }) {
 
       {error ? <Text style={styles.error}><Icon name="warning-outline" size={15} color={colors.danger} /> {error}</Text> : null}
 
-      <Button onPress={handleSubmit}>{t('createAccount')}</Button>
+      <Button onPress={handleSubmit} loading={loading} disabled={loading}>{t('createAccount')}</Button>
 
       <View style={styles.linkRow}>
         <Text style={styles.linkRowText}>{t('alreadyHaveAccount')} </Text>
