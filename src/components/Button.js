@@ -1,10 +1,14 @@
-import { Pressable, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { colors, radius } from '../theme';
+import { Pressable, Text, StyleSheet, ActivityIndicator, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { colors, radius, gradient } from '../theme';
+import Icon from './Icon';
 
 const VARIANTS = {
-  primary: { bg: colors.primary, text: colors.white, border: 'transparent' },
+  primary: { gradient: true, text: colors.white, border: 'transparent' },
   outline: { bg: 'transparent', text: colors.text, border: colors.border },
   'outline-accent': { bg: 'transparent', text: colors.primary, border: colors.primary },
+  'outline-danger': { bg: 'transparent', text: colors.danger, border: colors.danger },
+  ghost: { bg: colors.surfaceMid, text: colors.text, border: 'transparent' },
 };
 
 export default function Button({
@@ -15,32 +19,59 @@ export default function Button({
   fullWidth = true,
   disabled = false,
   loading = false,
+  icon,
+  iconPosition = 'left',
   style,
 }) {
   const palette = VARIANTS[variant] || VARIANTS.primary;
   const isSmall = size === 'sm';
+  const isGradient = !!palette.gradient && !disabled;
+
+  const content = loading ? (
+    <ActivityIndicator color={palette.text} />
+  ) : (
+    <>
+      {icon && iconPosition === 'left' && <Icon name={icon} size={isSmall ? 14 : 16} color={palette.text} style={styles.iconLeft} />}
+      <Text style={[styles.text, { color: palette.text, fontSize: isSmall ? 13 : 15 }]}>{children}</Text>
+      {icon && iconPosition === 'right' && <Icon name={icon} size={isSmall ? 14 : 16} color={palette.text} style={styles.iconRight} />}
+    </>
+  );
 
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled || loading}
+      accessibilityRole="button"
+      accessibilityLabel={typeof children === 'string' ? children : undefined}
+      accessibilityState={{ disabled: Boolean(disabled || loading), busy: Boolean(loading) }}
       style={({ pressed }) => [
-        styles.base,
-        {
-          backgroundColor: palette.bg,
-          borderColor: palette.border,
-          borderWidth: palette.border === 'transparent' ? 0 : 1.5,
-          paddingVertical: isSmall ? 9 : 14,
-          opacity: pressed ? 0.85 : disabled ? 0.5 : 1,
-          alignSelf: fullWidth ? 'stretch' : 'flex-start',
-        },
+        { alignSelf: fullWidth ? 'stretch' : 'flex-start', opacity: pressed ? 0.85 : disabled ? 0.5 : 1 },
         style,
       ]}
     >
-      {loading ? (
-        <ActivityIndicator color={palette.text} />
+      {isGradient ? (
+        <LinearGradient
+          colors={gradient.colors}
+          start={gradient.start}
+          end={gradient.end}
+          style={[styles.base, { paddingVertical: isSmall ? 9 : 15 }, !isSmall && styles.glow]}
+        >
+          {content}
+        </LinearGradient>
       ) : (
-        <Text style={[styles.text, { color: palette.text, fontSize: isSmall ? 13 : 15 }]}>{children}</Text>
+        <View
+          style={[
+            styles.base,
+            {
+              backgroundColor: palette.bg,
+              borderColor: palette.border,
+              borderWidth: palette.border === 'transparent' ? 0 : 1.5,
+              paddingVertical: isSmall ? 9 : 14,
+            },
+          ]}
+        >
+          {content}
+        </View>
       )}
     </Pressable>
   );
@@ -51,8 +82,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
+  glow: { shadowColor: '#8234C6', shadowOpacity: 0.3, shadowOffset: { width: 0, height: 4 }, shadowRadius: 12, elevation: 3 },
   text: {
     fontWeight: '700',
   },
+  iconLeft: { marginRight: 6 },
+  iconRight: { marginLeft: 6 },
 });

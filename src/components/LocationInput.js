@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, Pressable, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
 import { colors, radius, shadow } from '../theme';
+import Icon from './Icon';
 
-export default function LocationInput({ label, value, onChange, placeholder, icon = '📍' }) {
+export default function LocationInput({ label, value, onChange, placeholder, icon = 'location-outline' }) {
   const [query, setQuery] = useState(value || '');
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen] = useState(false);
@@ -59,7 +60,7 @@ export default function LocationInput({ label, value, onChange, placeholder, ico
     <View style={styles.field}>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.wrap}>
-        {icon ? <Text style={styles.icon}>{icon}</Text> : null}
+        {icon ? <Icon name={icon} size={17} color={colors.textMuted} style={styles.icon} /> : null}
         <TextInput
           style={styles.input}
           value={query}
@@ -74,18 +75,13 @@ export default function LocationInput({ label, value, onChange, placeholder, ico
 
       {open && suggestions.length > 0 && (
         <View style={styles.suggestions}>
-          <FlatList
-            data={suggestions}
-            keyExtractor={(item) => String(item.place_id)}
-            keyboardShouldPersistTaps="handled"
-            renderItem={({ item }) => (
-              <Pressable style={styles.suggestionRow} onPress={() => handleSelect(item)}>
+            {suggestions.map((item) => (
+              <Pressable key={String(item.place_id)} style={styles.suggestionRow} onPress={() => handleSelect(item)}>
                 <Text style={styles.suggestionText} numberOfLines={2}>
-                  📍 {item.display_name}
+                  <Icon name="location-outline" size={14} color={colors.textMuted} /> {item.display_name}
                 </Text>
               </Pressable>
-            )}
-          />
+          ))}
         </View>
       )}
     </View>

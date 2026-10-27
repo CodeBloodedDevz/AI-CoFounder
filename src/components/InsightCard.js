@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, radius } from '../theme';
+import Icon from './Icon';
 
-export default function InsightCard({ icon = '💡', title, children, action }) {
+export default function InsightCard({ icon = 'bulb-outline', title, children, action }) {
   return (
     <View style={styles.card}>
       {title ? (
         <Text style={styles.title}>
-          <Text style={styles.iconText}>{icon} </Text>
+          <Icon name={icon} size={15} color={colors.white} style={styles.iconText} />
           {title}
         </Text>
       ) : null}
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: { color: colors.white, fontWeight: '700', fontSize: 13.5, marginBottom: 8 },
-  iconText: { fontSize: 14 },
+  iconText: { marginRight: 6 },
   body: { color: '#D9D5E4', fontSize: 13.5, lineHeight: 20 },
   bodyView: {},
   action: { marginTop: 12 },
