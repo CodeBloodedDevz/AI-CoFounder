@@ -16,11 +16,41 @@
     "android": {
       "package": "com.aicofounder.app",
       "adaptiveIcon": {
-        "backgroundColor": "#FF5773"
-      }
+        "backgroundColor": "#FF4D6D"
+      },
+      "permissions": [
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.SCHEDULE_EXACT_ALARM"
+      ]
     },
     "web": {
       "bundler": "metro"
-    }
+    },
+    "plugins": [
+      "expo-status-bar",
+      "expo-asset",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "AI Co-Founder uses the microphone so you can record voice notes and talk to your AI business partner.",
+          "enableBackgroundPlayback": false
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#8234C6",
+          "defaultChannel": "appointments"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "AI Co-Founder uses your photos so you can add your logo and pictures to your adverts.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
+    ]
   }
 }
