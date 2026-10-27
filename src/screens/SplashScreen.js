@@ -29,12 +29,11 @@ export default function SplashScreen({ navigation }) {
         <Text style={styles.title}>AI{'\n'}CO-FOUNDER</Text>
         <Text style={styles.tagline}>{t('tagline')}</Text>
       </View>
-
       <View style={styles.orbWrap}>
         <Animated.View style={[styles.orbGlow, { transform: [{ scale }], opacity }]} />
         <View style={styles.orbRing} />
         <View style={styles.orb}>
-          <Text style={styles.orbLabel}>AI</Text>
+          <Text style={styles.orbLabel}>{t('navAI')}</Text>
         </View>
       </View>
 
