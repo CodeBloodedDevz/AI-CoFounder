@@ -1,0 +1,65 @@
+/* src/components/Badge.css */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+.badge--active      { background: var(--green-100);  color: #15803d; }
+.badge--suspended   { background: var(--red-100);    color: #b91c1c; }
+.badge--successful  { background: var(--green-100);  color: #15803d; }
+.badge--failed      { background: var(--red-100);    color: #b91c1c; }
+.badge--pending     { background: var(--yellow-100); color: #854d0e; }
+.badge--free        { background: var(--gray-100);   color: var(--gray-700); }
+.badge--pro         { background: var(--purple-100); color: var(--purple-600); }
+.badge--premium     { background: var(--coral-100);  color: #c2410c; }
+.badge--demo        { background: var(--yellow-100); color: #854d0e; }
+.badge--healthy     { background: var(--green-100);  color: #15803d; }
+.badge--warning     { background: var(--yellow-100); color: #854d0e; }
+.badge--unavailable { background: var(--red-100);    color: #b91c1c; }
+/* Real statuses from the app's database */
+.badge--success,
+.badge--paid,
+.badge--completed,
+.badge--confirmed,
+.badge--in-stock,
+.badge--sale        { background: var(--green-100);  color: #15803d; }
+.badge--cancelled,
+.badge--expired,
+.badge--missed,
+.badge--no-show,
+.badge--out-of-stock,
+.badge--mismatch    { background: var(--red-100);    color: #b91c1c; }
+.badge--scheduled,
+.badge--cancelling,
+.badge--low-stock,
+.badge--refunded    { background: var(--yellow-100); color: #854d0e; }
+.badge--expense     { background: var(--coral-100);  color: #c2410c; }
+.badge--test        { background: var(--gray-100);   color: var(--gray-700); }
+.badge--live        { background: var(--purple-100); color: var(--purple-600); }
+.badge--super_admin,
+.badge--admin       { background: var(--purple-100); color: var(--purple-600); }
+/* Sponsored adverts */
+.badge--pending_review,
+.badge--awaiting_payment,
+.badge--requested   { background: var(--yellow-100); color: #854d0e; }
+.badge--scheduled   { background: var(--purple-100); color: var(--purple-600); }
+.badge--rejected,
+.badge--removed,
+.badge--account_suspended { background: var(--red-100); color: #b91c1c; }
+.badge--withdrawn,
+.badge--dismissed,
+.badge--none        { background: var(--gray-100); color: var(--gray-700); }
+.badge--approved,
+.badge--actioned    { background: var(--green-100); color: #15803d; }
+.badge--open        { background: var(--yellow-100); color: #854d0e; }
+.badge--standard    { background: var(--gray-100); color: var(--gray-700); }
+.badge--featured    { background: var(--purple-100); color: var(--purple-600); }
+.badge--priority    { background: var(--coral-100); color: #c2410c; }
+.badge--paid        { background: var(--green-100); color: #15803d; }
+.badge--included    { background: var(--purple-100); color: var(--purple-600); }

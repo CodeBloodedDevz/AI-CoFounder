@@ -1,0 +1,66 @@
+/* src/styles/variables.css */
+:root {
+  /* ── Brand colours ── */
+  --purple:        #6B21D6;
+  --purple-dark:   #3B0764;
+  --purple-mid:    #8B5CF6;
+  --purple-light:  #EDE9FF;
+  --purple-50:     #F3F0FF;
+  --coral:         #FF747C;
+  --coral-light:   #FFE8E9;
+  --lavender:      #F3F0FF;
+
+  /* ── Neutrals ── */
+  --white:         #FFFFFF;
+  --text-dark:     #24213A;
+  --text-muted:    #85839A;
+  --border:        #EAE8F2;
+  --gray-100:      #F7F6FB;
+  --gray-200:      #EAE8F2;
+  --gray-300:      #D4D1E4;
+  --gray-500:      #85839A;
+
+  /* ── Semantic ── */
+  --green:         #22C55E;
+  --green-light:   #DCFCE7;
+  --red:           #EF4444;
+  --red-light:     #FEE2E2;
+  --yellow:        #F59E0B;
+  --yellow-light:  #FEF3C7;
+
+  /* ── Shade aliases used by the component styles (taken from the palette above) ── */
+  --gray-50:       #FAF9FD;
+  --gray-400:      #A9A7BC;
+  --gray-600:      #6B6984;
+  --gray-700:      #4A4763;
+  --gray-900:      var(--text-dark);
+  --green-100:     var(--green-light);
+  --green-500:     var(--green);
+  --red-100:       var(--red-light);
+  --red-500:       var(--red);
+  --yellow-100:    var(--yellow-light);
+  --yellow-500:    var(--yellow);
+  --purple-100:    var(--purple-light);
+  --purple-500:    var(--purple-mid);
+  --purple-600:    var(--purple);
+  --coral-100:     var(--coral-light);
+  --coral-500:     var(--coral);
+
+  /* ── Layout ── */
+  --sidebar-w:     256px;
+  --topbar-h:      64px;
+
+  /* ── Radii ── */
+  --radius-sm:     6px;
+  --radius-md:     12px;
+  --radius-lg:     16px;
+  --radius-xl:     24px;
+
+  /* ── Shadows ── */
+  --shadow-sm:     0 1px 3px rgba(89,37,220,.08), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:     0 4px 16px rgba(89,37,220,.10), 0 2px 6px rgba(0,0,0,.06);
+  --shadow-lg:     0 8px 32px rgba(89,37,220,.14), 0 4px 12px rgba(0,0,0,.08);
+
+  /* ── Typography ── */
+  --font:          'Inter', system-ui, sans-serif;
+}

@@ -1,0 +1,22 @@
+/* src/pages/BusinessDetail.css */
+.bd__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--purple-600);
+  margin-bottom: 16px;
+}
+.bd__back:hover { text-decoration: underline; }
+.bd__muted { font-size: 13px; color: var(--gray-500); }
+.bd__grid { margin-bottom: 24px; }
+.bd__top { margin-bottom: 24px; }
+.bd__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.bd__chip {
+  background: var(--purple-50);
+  border: 1px solid var(--purple-100);
+  color: var(--gray-700);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+}

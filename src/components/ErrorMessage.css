@@ -1,0 +1,12 @@
+/* src/components/ErrorMessage.css */
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--red-100);
+  color: #b91c1c;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 500;
+}

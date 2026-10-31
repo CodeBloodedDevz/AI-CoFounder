@@ -1,0 +1,72 @@
+/* src/pages/Dashboard.css */
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.dashboard__charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.dashboard__tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+.dashboard__pie-wrap { display: flex; align-items: center; justify-content: center; }
+
+@media (max-width: 900px) {
+  .dashboard__charts,
+  .dashboard__tables { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .dashboard__stats { grid-template-columns: 1fr 1fr; }
+}
+
+.dashboard__filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.dashboard__filter label { font-size: 13px; color: var(--gray-500); }
+.dashboard__filter input[type="date"] {
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--gray-700);
+  outline: none;
+}
+.dashboard__filter input[type="date"]:focus { border-color: var(--purple-500); }
+.dashboard__filter-clear {
+  padding: 6px 12px;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-size: 13px;
+  color: var(--gray-500);
+}
+.dashboard__filter-clear:hover { background: var(--gray-100); }
+
+/* Recharts custom tooltip */
+.chart-tooltip {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+}
+.chart-tooltip__label { font-weight: 600; color: var(--gray-700); margin-bottom: 4px; }
+
+/* Real-data additions */
+.dashboard__section-title { font-size: 13px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 12px; }
+.dashboard__empty { padding: 48px 12px; text-align: center; font-size: 13px; color: var(--gray-500); }
+.action-link { color: var(--purple-600); font-weight: 500; }
+.action-link:hover { text-decoration: underline; }
