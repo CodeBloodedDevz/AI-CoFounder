@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './navigationRef';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ActivityIndicator, View } from 'react-native';
+import { View } from 'react-native';
 import { useApp } from '../context/AppContext';
-import { colors } from '../theme';
 
 import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -36,19 +35,17 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   const { state, isReady, dataStatus, dataError, refreshData, logout, recoveryNotice } = useApp();
   const [routeName, setRouteName] = useState(null);
+  // The splash is the first thing on every launch: it stays for its minimum time, and longer if the
+  // session / saved data is still loading.
+  const [splashDone, setSplashDone] = useState(false);
+  const finishSplash = useCallback(() => setSplashDone(true), []);
   // The top-level screen ('Main' when the tab bar is showing), not the tab inside it.
   const syncRoute = () => {
     const root = navigationRef.getRootState();
     setRouteName(root ? root.routes[root.index]?.name ?? null : null);
   };
 
-  if (!isReady) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (!isReady || !splashDone) return <SplashScreen onFinish={finishSplash} />;
 
   const isLoggedIn = !!state.user;
 
@@ -72,7 +69,6 @@ export default function RootNavigator() {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-            <Stack.Screen name="Splash" component={SplashScreen} />
           </>
         ) : (
           <>
