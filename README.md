@@ -238,6 +238,6 @@ npm test                 # app: logic, translations, voice
 cd backend && npm test   # server: payments, AI tools, product edits, password reset
 ```
 
-## What changed in this version
+## What changed in this version-
 
 See `CHANGES.md` for the page-by-page review and every fix.
