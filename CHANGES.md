@@ -1,3 +1,13 @@
+# Splash screen
+
+- `src/screens/SplashScreen.js` rebuilt from the designer's splash (HTML + screenshot): logo badge, AICO + AI pill,
+  tagline, "Empowering micro-businesses across Africa" pill, animated progress bar, rotating status line,
+  Enterprise Encrypted / POPIA Compliant marks and version line. It is shown on **every launch**
+  (`RootNavigator`): at least 3 seconds, and longer if the session / saved data is still loading, then it goes to
+  Log in or the dashboard as before. The unused `Splash` route was removed.
+- New `splash.*` texts in English, Afrikaans and isiZulu. `app.json` native splash colour now matches the screen.
+- Tests: `jest.setup.js` (AsyncStorage mock) is now actually loaded via `package.json`, and safe-area is mocked.
+
 # Sponsored page: business adverts
 
 **Run `backend/supabase/sponsored.sql` in Supabase and `npx expo install expo-image-picker` after updating.** See
@@ -620,4 +630,4 @@ The existing design system (colours, gradient, components) is unchanged; establi
 
 - The Premium plan lists "Multi-business support" and "Priority support", which the app doesn't provide yet.
   The plan texts are shared with the server's price list, so they were left as they are.
-- `SplashScreen` is registered but nothing navigates to it (the app starts on Log in).
+- ~~`SplashScreen` is registered but nothing navigates to it~~ Fixed: the designer's splash now opens on every launch (see top entry).

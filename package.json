@@ -50,6 +50,9 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/backend/"
+    ],
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
     ]
   }
 }
