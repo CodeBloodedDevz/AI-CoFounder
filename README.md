@@ -11,6 +11,9 @@ AI-CoFounder-development/
   backend/              the API server (Express) + database scripts in backend/supabase/
 ```
 
+**Deployed version:** the backend runs on Render and the Android app is built with EAS. See
+[DEPLOYMENT.md](DEPLOYMENT.md) for how it's set up and how to build, install and release.
+
 ## Requirements
 
 - Node.js 22 or newer (`node -v`)
@@ -35,7 +38,7 @@ between a completed booking and its income transaction.
 ```bash
 cd backend
 npm install
-# backend/.env is included. For a new project: copy .env.example to .env and fill it in.
+# copy .env.example to .env and fill it in (ask the project owner for the secret values)
 npm start
 ```
 
