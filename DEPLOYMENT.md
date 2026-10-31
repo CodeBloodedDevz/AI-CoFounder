@@ -135,12 +135,38 @@ need an Expo account.
 
 While someone tests, Render → service → **Logs** shows their requests live.
 
-## Releasing a change
+## Day-to-day workflow and releasing
 
-1. Make the change on a branch, test it locally, open a pull request, merge into `main`.
-2. **Backend changes** deploy to Render automatically after the merge.
-3. **App changes** need a new build: run the `preview` build again and send testers the new link.
-   (Changing `eas.json` or `app.json` always needs a new build.)
+**Branches:**
+- `deployed-app`: where the team makes and tests changes. Pushing here doesn't change anything live.
+- `main`: what's released. Render deploys the backend from it, and APKs are built from it.
+
+**While working** (on `deployed-app`): test with the backend running on your own computer
+(`npm start` in `backend/`), especially if you changed backend code. The live server only gets
+backend changes after they reach `main`.
+
+**When ready for a new build:**
+1. Merge `deployed-app` into `main` and push.
+2. If anything in `backend/` changed, Render deploys it automatically. Wait for **Live** in the Render
+   dashboard (a few minutes) before building.
+3. On your computer, get exactly what's on `main`, then build:
+   ```bash
+   git switch main
+   git pull
+   npx eas-cli@latest build -p android --profile preview
+   ```
+   EAS builds the files in your local folder, not what's on GitHub, so always build from an up-to-date
+   `main`.
+4. Send testers the new link. Then go back to `deployed-app` (`git switch deployed-app`, then
+   `git merge main`) and carry on.
+
+**Rules of thumb:**
+- Merge backend changes **before or together with** the app changes that use them, never after;
+  otherwise the new APK calls server features that don't exist yet.
+- **There is only one database.** Local copies and the live server all use the same Supabase project,
+  so test data you create while coding is real data, and SQL run in Supabase changes production
+  immediately. Set up a separate Supabase project for development before real users join.
+- Changing `eas.json` or `app.json` always needs a new build.
 
 ## Troubleshooting
 
